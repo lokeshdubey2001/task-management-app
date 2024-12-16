@@ -1,11 +1,16 @@
 import { v4 as uuid4 } from 'uuid'
-import useAddTaskState from "../../customHooks/useAddTaskState"
 import { addTask } from "../../store/taskSlice";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 function AddTask() {
 
-   const { title, description, status, setField, setState } = useAddTaskState();
+   const [title, setTitle] = useState("");
+   const [description, setDescription] = useState("");
+   const [status, setStatus] = useState("To Do")
 
+
+   const dispatch = useDispatch();
 
    function handleSubmit(e) {
       e.preventDefault();
@@ -16,11 +21,9 @@ function AddTask() {
          status,
       }
       dispatch(addTask(newTask));
-      setState({
-         title: "",
-         description: "",
-         status: "To Do",
-      })
+      setTitle("");
+      setDescription("");
+      setStatus("To Do");
    }
 
    return (
@@ -33,7 +36,7 @@ function AddTask() {
                type="text"
                placeholder="Task Title"
                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-               onInput={(e) => setField("title", e.target.value)}
+               onInput={(e) => setTitle(e.target.value)}
                value={title}
                required
             />
@@ -43,7 +46,7 @@ function AddTask() {
                placeholder="Task Description"
                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                rows="3"
-               onInput={(e) => setField("description", e.target.value)}
+               onInput={(e) => setDesciption(e.target.value)}
                value={description}
             >
             </textarea>
@@ -51,7 +54,7 @@ function AddTask() {
          <div className="mb-4">
             <select
                value={status}
-               onInput={(e) => setField("status", e.target.value)}
+               onInput={(e) => setStatus(e.target.value)}
                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
                <option value="To Do">To Do</option>
                <option value="In Progress">In Progress</option>
